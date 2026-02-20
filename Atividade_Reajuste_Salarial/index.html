@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de Avaliação</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-color: #c6ddff;
+            display: flex;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        .formulario {
+            width: 40%;
+            padding: 30px;
+            background-color: #253550;
+            color: white;
+        }
+
+        .formulario h2 {
+            margin-bottom: 20px;
+        }
+
+        .formulario input,
+        .formulario select,
+        .formulario button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+        }
+
+        .formulario button {
+            background-color: #22c55e;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .formulario button:hover {
+            background-color: #16a34a;
+        }
+
+        .painel {
+            width: 60%;
+            padding: 30px;
+            background-color: #ffffff;
+        }
+
+        .painel h2 {
+            margin-bottom: 20px;
+        }
+
+        .historico {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-line;
+            font-size: 15px;
+            border: 1px solid black;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="formulario">
+        <h2>Avaliação Anual</h2>
+
+        <input type="text" id="nome" placeholder="Nome do colaborador">
+
+        <select id="cargo">
+            <option value="">Selecione o Cargo</option>
+            <option value="Aprendiz">Aprendiz</option>
+            <option value="Analista de TI">Analista de TI</option>
+            <option value="Gerente de TI">Gerente de TI</option>
+            <option value="Diretor de TI">Diretor de TI</option>
+        </select>
+
+        <input type="number" id="salario" placeholder="Salário Atual">
+
+        <input type="number" id="faltas" placeholder="Quantidade de faltas">
+
+        <input type="number" id="atrasos" placeholder="Quantidade de atrasos">
+
+        <button onclick="avaliar()">Calcular Reajuste</button>
+    </div>
+
+    <div class="painel">
+        <h2>Painel de Histórico</h2>
+        <div class="historico" id="resultado">
+            Aguardando avaliação...
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+function avaliar() {
+
+    let nome = document.getElementById("nome").value;
+    let cargo = document.getElementById("cargo").value;
+    let salario = parseFloat(document.getElementById("salario").value);
+    let faltas = parseInt(document.getElementById("faltas").value);
+    let atrasos = parseInt(document.getElementById("atrasos").value);
+
+    let percentual = 0;
+
+    // Cálculo por cargo
+    if (cargo === "Aprendiz") {
+        percentual = 0;
+    } else if (cargo === "Analista de TI") {
+        percentual = 10;
+    } else if (cargo === "Gerente de TI") {
+        percentual = 15;
+    } else if (cargo === "Diretor de TI") {
+        percentual = 20;
+    }
+
+    // Regra de mérito (operador lógico &&)
+    if (faltas === 0 && atrasos === 0) {
+
+        let aumento = salario * (percentual / 100);
+        let novoSalario = salario + aumento;
+
+        document.getElementById("resultado").innerText = `
+Relatório de Avaliação - TechSoluções
+
+Colaborador: ${nome}
+Cargo: ${cargo}
+
+Histórico disciplinar:
+Faltas: ${faltas}
+Atrasos: ${atrasos}
+
+Percentual de reajuste: ${percentual}%
+
+Valor do aumento: R$ ${aumento.toFixed(2)}
+Novo salário: R$ ${novoSalario.toFixed(2)}
+
+Status: ✅ REAJUSTE APROVADO
+Parabéns pelo excelente desempenho!
+        `;
+
+    } else {
+
+        document.getElementById("resultado").innerText = `
+Relatório de Avaliação - TechSoluções
+
+Colaborador: ${nome}
+Cargo: ${cargo}
+
+Histórico disciplinar:
+Faltas: ${faltas}
+Atrasos: ${atrasos}
+
+Status: ❌ REAJUSTE BLOQUEADO
+
+Motivo:
+O colaborador não atende ao critério de mérito
+(é necessário ter 0 faltas E 0 atrasos).
+
+Orientação:
+Favor procurar o RH para mais informações.
+        `;
+    }
+
+}
+
+</script>
+
+</body>
+</html>
